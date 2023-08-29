@@ -1,0 +1,59 @@
+<section>
+    <div class="max-w-6xl mx-auto px-4 md:px-0">
+        <div class="grid grid-cols-1 md:grid-cols-2 min-h-[400px]">
+            <aside class="flex items-center">
+                <div>
+                    <p class="font-semibold mb-3">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    </p>
+                    <h1 class="text-6xl font-black mb-6">
+                        Welcome to Procity Portal.
+                    </h1>
+                    <p class="text-sm text-slate-500 mb-4">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro cum 
+                        id quam magni voluptas perferendis suscipit mollitia beatae a totam?
+                    </p>
+                    <h4 class="text-xl text-red-500 font-bold mb-3">
+                        Lorem, ipsum dolor sit amet consectetur.
+                    </h4>
+                    <button class="bg-[#ffbf5d] py-3 px-6 rounded-lg font-bold text-lg" >
+                        Login to your account
+                    </button>
+                </div>
+            </aside>
+            <aside class="relative">
+                <img src="images/student.png" alt="student image" class="mx-auto">
+                <!-- Rate Box -->
+                <div class="absolute min-h-[150px] w-36 bg-gradient-to-br from-[#f3f4f6b8] via-[#c5cbd1b8] to-[#f1f5f9b8] top-[30%] left-10 rounded-lg shadow">
+
+                </div>
+                <!-- Student Count Box -->
+                <div class="absolute min-h-[150px] w-36 bg-gradient-to-br from-[#f3f4f6b8] via-[#c5cbd1b8] to-[#f1f5f9b8] bottom-7 left-40 rounded-lg shadow">
+
+                </div>
+                <!-- Course Box -->
+                <div id="stdBox" class="absolute px-3 py-3 min-h-[150px] text-white w-40 bg-gradient-to-br from-primary to-[#ab4fd6] bottom-20 right-10 rounded-lg shadow">
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<script>
+    fetch('./../server/banner_stats.php')
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data);
+        let studentData = `<span class="text-lg bg-[#ff9f00] h-7 w-7 flex items-center justify-center rounded-sm">
+                        ${data.students.icon}
+                    </span>
+                    <h1 class="text-3xl mt-7 font-bold">
+                        ${data.students.data}+
+                    </h1>
+                    <p class="text-sm font-semibold">
+                        ${data.students.message}
+                    </p>`;
+
+        document.getElementById('stdBox').innerHTML = studentData;
+    })
+</script>

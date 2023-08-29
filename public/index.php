@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Procity Portal</title>
     <link rel="stylesheet" href="./css/app.css">
+    <link rel="stylesheet" href="fa_icons/css/all.css">
 </head>
 <body>
-    <h2>
-        Hello
-    </h2>
+    <?php
+        include "components/header.html";
+        include "components/banner.html";
+    ?>
 </body>
 </html>
