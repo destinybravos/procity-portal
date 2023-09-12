@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./../css/app.css">
+    <link rel="stylesheet" href="../fa_icons/css/all.css">
+</head>
+<body>
+    <section class="min-h-screen bg-slate-200 flex justify-center items-center">
+        <aside class="w-full max-w-sm px-4">
+            <img src="../images/logo.png" class="h-14 mb-4 mx-auto" >
+
+            <div class="bg-primary text-white px-4 py-3 rounded-md">
+                <form method="post" id="frm_register">
+                    <div class="mb-4">
+                        <label for="uname">
+                            <i class="fa fa-user"></i> Name
+                        </label>
+                        <input type="uname" name="uname" id="uname" placeholder="Enter your name" class="block w-full rounded-md h-8 mt-1 px-3 text-slate-700">
+                    </div>
+                    <div class="mb-4">
+                        <label for="email">
+                            <i class="fa fa-envelope"></i> Email Address
+                        </label>
+                        <input type="email" name="email" id="email" placeholder="Email Address" class="block w-full rounded-md h-8 mt-1 px-3 text-slate-700">
+                    </div>
+                    <div class="mb-4">
+                        <label for="password">
+                            <i class="fa fa-lock"></i> Password
+                        </label>
+                        <input type="password" name="password" id="password" placeholder="Enter your password" class="block w-full rounded-md h-8 mt-1 px-3 text-slate-700">
+                    </div>
+                    <div class="mb-4">
+                        <label for="c_password">
+                            <i class="fa fa-key"></i> Confirm Password
+                        </label>
+                        <input type="password" name="c_password" id="c_password" placeholder="Re-enter your password" class="block w-full rounded-md h-8 mt-1 px-3 text-slate-700">
+                    </div>
+                    <div class="mb-4 flex items-center justify-between">
+                        <aside>
+                            <input type="checkbox" required name="term" id="term"> <label for="term">I agree with <a href="http://">Terms</a></label>
+                        </aside>
+                    </div>
+                    <div class="mb-4">
+                        <button type="submit" class="bg-white py-1 px-4 rounded-md text-slate-800">
+                            <i class="fa fa-sign-in-alt"></i> Login
+                        </button>
+                    </div>
+                </form>
+                <div class="text-center">
+                    <a href="login.html">Alrread have an account?</a>
+                </div>
+            </div>
+        </aside>
+    </section>
+
+    <!-- JS Scripts  -->
+    <script>
+        let frmLogin = document.getElementById('frm_register');
+    
+        frmLogin.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Recieve all the data from the form
+            let uname = document.getElementById('uname').value;
+            let email = document.getElementById('email').value;
+            let password = document.getElementById('password').value;
+            let c_password = document.getElementById('c_password').value;
+            let term = document.getElementById('term').value;
+
+            if (password != c_password) {
+                alert('Password Mismatch');
+            }else{
+                // Create an object of Javascript FormData
+                let form = new FormData();
+
+                form.append('uname', uname);
+                form.append('email', email);
+                form.append('password', password);
+                form.append('terms', term);
+                form.append('confirm_password', c_password); // Optional
+
+    
+                // Send a register request to backend
+                fetch('../../server/register_handler.php', {
+                    method: 'POST',
+                    body: form,
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.status == 'success') {
+                        // If the request is successful, redirect to the login
+                        alert(data.message);
+                        window.location.href = 'login.html';
+                    } else {
+                        alert(data.message);
+                    }
+                });
+                
+            }
+        })
+    </script>
+</body>
+</html>

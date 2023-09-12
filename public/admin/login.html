@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./../css/app.css">
+    <link rel="stylesheet" href="../fa_icons/css/all.css">
+</head>
+<body>
+    <section class="min-h-screen bg-slate-200 flex justify-center items-center">
+        <aside class="w-full max-w-sm px-4">
+            <img src="../images/logo.png" class="h-14 mb-4 mx-auto" >
+
+            <div class="bg-primary text-white px-4 py-3 rounded-md">
+                <form method="post" id="frm_login">
+                    <div class="mb-4">
+                        <label for="email">
+                            <i class="fa fa-envelope"></i> Email Address
+                        </label>
+                        <input type="email" required name="email" id="email" placeholder="Email Address" class="block w-full rounded-md h-8 mt-1 px-3 text-slate-700">
+                    </div>
+                    <div class="mb-4">
+                        <label for="password">
+                            <i class="fa fa-key"></i> Password
+                        </label>
+                        <input type="password" required name="password" id="password" placeholder="Enter your password" class="block w-full rounded-md h-8 mt-1 px-3 text-slate-700">
+                    </div>
+                    <div class="mb-4 flex items-center justify-between">
+                        <aside>
+                            <input type="checkbox" name="remember" id="remember"> Remember me
+                        </aside>
+                        <aside>
+                            <a href="#">Forgot Password</a>
+                        </aside>
+                    </div>
+                    <div class="mb-4">
+                        <button type="submit" class="bg-white py-1 px-4 rounded-md text-slate-800">
+                            <i class="fa fa-sign-in-alt"></i> Login
+                        </button>
+                    </div>
+                </form>
+                <div class="text-center">
+                    <a href="register.html">Don't have an account?</a>
+                </div>
+            </div>
+        </aside>
+    </section>
+
+    <script>
+        let frmLogin = document.getElementById('frm_login');
+
+        frmLogin.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Recieve all the data from the form
+            let email = document.getElementById('email').value;
+            let password = document.getElementById('password').value;
+
+            // Create an object of Javascript FormData
+            let form = new FormData();
+
+            form.append('email', email);
+            form.append('password', password);
+
+    
+            // Send a login request to backend
+            fetch('../../server/login_handler.php', {
+                method: 'POST',
+                body: form,
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.status == 'success') {
+                    // If the request is successful, redirect to the login
+                    alert(data.message);
+                    sessionStorage.setItem('active_user', JSON.stringify(data.user));
+                    window.location.href = 'dashboard.php';
+                } else {
+                    alert(data.message);
+                }
+            });
+        })
+    </script>
+</body>
+</html>
