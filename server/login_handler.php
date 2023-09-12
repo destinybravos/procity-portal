@@ -12,11 +12,11 @@
 
     // Check How many rows have the data. If it greater than 0, that means it exists already.
     if ($execQuery->num_rows > 0) {
-        $user = $execQuery->fetch_assoc();
+        $user = $execQuery->fetch_assoc(); // Get the user information
         $response = [
             'status' => 'success',
             'message' => 'Login successful.',
-            'user' => $user
+            'user' => $user // Pass the user information with the response
         ];
     } else {
         $response = [
