@@ -1,0 +1,100 @@
+<!-- Add Category Modal -->
+<section id="cat_modal" class="fixed top-0 left-0 bg-black bg-opacity-50 h-full w-full z-50 hidden">
+    <!-- Modal Content -->
+    <aside class="flex justify-center items-center h-full w-full">
+        <div id="cat_modal_content" class="bg-white w-full max-w-lg px-4 py-3">
+            <h1 class="text-lg font-bold py-2 mb-5">
+                <i class="fa fa-plus"></i> Add Category
+            </h1>
+            <form method="post" id="frm_category">
+                <div class="mb-4">
+                    <label for="category">
+                        <i class="fa fa-layer-group"></i> Category
+                    </label>
+                    <input type="category" required name="category" id="category" placeholder="Enter your name" class="block w-full rounded-md h-8 mt-1 px-3 py-2 text-slate-700 border">
+                </div>
+                <div class="mb-4">
+                    <label for="description">
+                        <i class="fa fa-envelope"></i> Description <small>(optional)</small>
+                    </label>
+                    <textarea rows="5" name="description" id="description" placeholder="Extra information" class="block w-full rounded-md mt-1 px-3 text-slate-700 py-2 border"></textarea>
+                </div>
+                <div class="mb-4">
+                    <button type="submit" class="bg-primary py-2 px-4 rounded-md text-slate-50">
+                        <i class="fa fa-save"></i> Save Category
+                    </button>
+                    <button onclick="toggleModal('cat_modal')" type="button" class="bg-red-500 py-2 px-4 rounded-md text-slate-50">
+                        <i class="fa fa-times-circle"></i> Close
+                    </button>
+                </div>
+            </form>
+        </div>
+    </aside>
+</section>
+<!-- Script for Category Modal -->
+<script>
+    // A function to toggle the visibility of categories modal
+    let toggleModal = (modal_id) => {
+        let modal = document.getElementById(modal_id);
+        if (modal.classList.contains('hidden')) {
+            modal.classList.remove('hidden');
+        } else {
+            modal.classList.add('hidden');
+        }
+    }
+
+    // Send Http Request to fetch the categories
+    let fetchCategory = () => {
+        fetch('../../server/fetch_categories.php')
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.status == 'success') {
+                    let list = ''; // Empty list
+
+                    // Loop throught the categories and accumulated the results into the list
+                    data.categories.forEach((cat) => {
+                        list += `<li class="py-2 px-3">
+                                    ${cat.category}
+                                </li>`;
+                    });
+
+                    // asign the list into the ul element with the id "cat_list"
+                    document.getElementById('cat_list').innerHTML = list;
+                } else {
+                    alert(data.message);
+                }
+            });
+    }
+    fetchCategory();
+
+    // Submit | Save the categgory
+    let form = document.getElementById('frm_category');
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let formData = new FormData(e.target);
+        // Submit the category to the server|database
+        fetch('../../server/save_category.php', {
+                method: 'POST', 
+                body: formData,
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.status == 'success') {
+                    alert(data.message); 
+                    form.reset();
+                    fetchCategory();
+                    toggleModal('cat_modal');
+                } else {
+                    alert(data.message);
+                }
+            });
+    })
+</script>
+
+
+
+
+
+
+
+

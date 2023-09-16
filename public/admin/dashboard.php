@@ -31,8 +31,16 @@
                 include '../components/admin_header.html';
             ?>
 
+            <section>
+                Dashboard
+            </section>
+
         </main>
     </section>
-    
+
+    <!-- Script -->
+    <script>
+        document.getElementById("page_indicator").innerHTML = `<i class="fa fa-tachometer-alt"></i> Dashboard`;
+    </script>
 </body>
 </html>
