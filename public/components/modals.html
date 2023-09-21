@@ -32,7 +32,7 @@
     </aside>
 </section>
 <!-- Script for Category Modal -->
-<script>
+<script defer>
     // A function to toggle the visibility of categories modal
     let toggleModal = (modal_id) => {
         let modal = document.getElementById(modal_id);
@@ -50,16 +50,19 @@
             .then((data) => {
                 if (data.status == 'success') {
                     let list = ''; // Empty list
+                    let options = ''; // Empty Options
 
                     // Loop throught the categories and accumulated the results into the list
                     data.categories.forEach((cat) => {
                         list += `<li class="py-2 px-3">
                                     ${cat.category}
                                 </li>`;
+                        options += `<option value="${cat.id}">${cat.category}</option>`
                     });
 
                     // asign the list into the ul element with the id "cat_list"
                     document.getElementById('cat_list').innerHTML = list;
+                    document.getElementById('sel_category').innerHTML = options;
                 } else {
                     alert(data.message);
                 }
@@ -98,3 +101,75 @@
 
 
 
+<!-- Add Post Modal -->
+<!-- Add Category Modal -->
+<section id="post_modal" class="fixed top-0 left-0 bg-black bg-opacity-50 h-full w-full z-50 hidden">
+    <!-- Modal Content -->
+    <aside class="flex justify-center items-center h-full w-full">
+        <div id="cat_modal_content" class="bg-white w-full max-w-lg px-4 py-3">
+            <h1 class="text-lg font-bold py-2 mb-5">
+                <i class="fa fa-plus"></i> Add Post
+            </h1>
+            <form method="post" id="frm_addpost">
+                <div class="mb-4">
+                    <label for="sel_category">
+                        <i class="fa fa-comment"></i> Post Category
+                    </label>
+                    <select required name="category_id" id="sel_category" placeholder="Enter your name" class="block w-full rounded-md mt-1 px-3 py-2 text-slate-700 border">
+                        <option value="" selected>Select Post Category</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="title">
+                        <i class="fa fa-comment"></i> Post Title
+                    </label>
+                    <input type="text" required name="title" id="title" placeholder="Enter your name" class="block w-full rounded-md h-8 mt-1 px-3 py-2 text-slate-700 border">
+                </div>
+                <div class="mb-4">
+                    <label for="body">
+                        <i class="fa fa-edit"></i> Post Body
+                    </label>
+                    <textarea rows="5" name="body" id="body" placeholder="Extra information" class="block w-full rounded-md mt-1 px-3 text-slate-700 py-2 border"></textarea>
+                </div>
+                <div class="mb-4">
+                    <button type="submit" class="bg-primary py-2 px-4 rounded-md text-slate-50">
+                        <i class="fa fa-save"></i> Save Post
+                    </button>
+                    <button onclick="toggleModal('post_modal')" type="button" class="bg-red-500 py-2 px-4 rounded-md text-slate-50">
+                        <i class="fa fa-times-circle"></i> Close
+                    </button>
+                </div>
+            </form>
+        </div>
+    </aside>
+</section>
+
+<script>
+    // Submit | Save the categgory
+    let formPost = document.getElementById('frm_addpost');
+    formPost.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let formData = new FormData(e.target);
+        formData.append('action', 'save_post')
+        // Submit the category to the server|database
+        fetch('../../server/manage_post.php', {
+                method: 'POST', 
+                body: formData,
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.status == 'success') {
+                    alert(data.message); 
+                    formPost.reset();
+                    fetchPost();
+                    toggleModal('post_modal');
+                } else {
+                    alert(data.message);
+                }
+            });
+    })
+
+    let fetchPost = () => {
+
+    }
+</script>

@@ -44,7 +44,7 @@
                             <button onclick="toggleModal('cat_modal')" class="bg-primary text-white rounded-md py-2 px-4 text-sm font-semibold">
                                 Add Category 
                             </button>
-                            <button class="bg-primary text-white rounded-md py-2 px-4 text-sm font-semibold">
+                            <button onclick="toggleModal('post_modal')" class="bg-primary text-white rounded-md py-2 px-4 text-sm font-semibold">
                                 Add Post 
                             </button>
                         </div>

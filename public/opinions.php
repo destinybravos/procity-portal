@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="fa_icons/css/all.css">
 </head>
 <body>
-    <?php
-        include "components/header.html";
-    ?>
+    <div class="bg-cover bg-no-repeat bg-center text-white" style="background-image: url('images/banner1.jpg');">
+        <?php
+            include "components/header.html";
+        ?>
+    </div>
 
     <section class="max-w-md mx-auto my-6">
         <h2 class="text-3xl font-bold">
