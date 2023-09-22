@@ -53,10 +53,24 @@
             </section>
 
             <section class="py-4 px-8 mb-5">
-                <div class="grid grid-cols-1 md:grid-cols-6">
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
                     <!-- Taable of Posts -->
-                    <aside class="md:col-span-4">
-
+                    <aside class="md:col-span-4 bg-white rounded-md">
+                        <div class="max-w-full overflow-x-auto">
+                            <table class="w-full rounded-md overflow-hidden">
+                                <thead class="bg-primary text-white">
+                                    <tr class="text-left">
+                                        <th class="py-2 px-4">#</th>
+                                        <th class="py-2 px-4">Title</th>
+                                        <th class="py-2 px-4">Author</th>
+                                        <th class="py-2 px-4">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_data">
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </aside>
                     <!-- List of Categories -->
                     <aside class="md:col-span-2">
@@ -77,6 +91,44 @@
     </section>
 
 
+    <script>
+        let fetchPost = () => {
+            let formData = new FormData();
+            formData.append('action', 'fetch_post')
+
+            fetch('../../server/manage_post.php', {
+                method: 'POST', 
+                body: formData,
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                let postList =  '';
+                data.posts.forEach((post) => {
+                    postList += `<tr class="odd:bg-blue-50">
+                                    <td class="py-2 px-4">${post.id}</td>
+                                    <td class="py-2 px-4">
+                                        ${post.title} <br />
+                                        <small class="bg-primary text-white rounded-lg text-xs px-2">${post.cat.category}</small>
+                                    </td>
+                                    <td class="py-2 px-4">${post?.author?.uname}</td>
+                                    <td class="py-2 px-4">
+                                        <button class="py-1 px-2 bg-blue-500 rounded-md text-xs text-white">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                        <button class="py-1 px-2 bg-green-500 rounded-md text-xs text-white">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button class="py-1 px-2 bg-red-500 rounded-md text-xs text-white">
+                                            <i class="fa fa-trash-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>`;
+                });
+                document.getElementById('table_data').innerHTML = postList;
+            });
+        }
+        fetchPost();
+    </script>
     <!-- Include the modals file -->
     <?php include '../components/modals.html'; ?>
 

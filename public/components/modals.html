@@ -110,7 +110,7 @@
             <h1 class="text-lg font-bold py-2 mb-5">
                 <i class="fa fa-plus"></i> Add Post
             </h1>
-            <form method="post" id="frm_addpost">
+            <form method="post" id="frm_addpost" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label for="sel_category">
                         <i class="fa fa-comment"></i> Post Category
@@ -123,13 +123,20 @@
                     <label for="title">
                         <i class="fa fa-comment"></i> Post Title
                     </label>
-                    <input type="text" required name="title" id="title" placeholder="Enter your name" class="block w-full rounded-md h-8 mt-1 px-3 py-2 text-slate-700 border">
+                    <input type="text" required name="title" id="title" placeholder="Enter your name" class="block w-full rounded-md mt-1 px-3 py-2 text-slate-700 border">
                 </div>
                 <div class="mb-4">
                     <label for="body">
                         <i class="fa fa-edit"></i> Post Body
                     </label>
                     <textarea rows="5" name="body" id="body" placeholder="Extra information" class="block w-full rounded-md mt-1 px-3 text-slate-700 py-2 border"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="ft_image">
+                        <i class="fa fa-edit"></i> Featured Imagge
+                    </label>
+                    <input type="file" accept="image/*" required name="ft_image" id="ft_image" placeholder="Enter your name" class="block w-full rounded-md  mt-1 px-3 py-2 text-slate-700 border">
+                    <!-- <input type="file" multiple accept="image/*" required name="ft_image" id="ft_image" placeholder="Enter your name" class="block w-full rounded-md  mt-1 px-3 py-2 text-slate-700 border"> -->
                 </div>
                 <div class="mb-4">
                     <button type="submit" class="bg-primary py-2 px-4 rounded-md text-slate-50">
@@ -168,8 +175,4 @@
                 }
             });
     })
-
-    let fetchPost = () => {
-
-    }
 </script>
