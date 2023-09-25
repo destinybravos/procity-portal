@@ -15,6 +15,7 @@
 
     // Check How many rows have the data. If it greater than 0, that means it exists already.
     if ($execQuery->num_rows > 0) {
+        header('HTTP/1.1 422 Account already exists');
         $response = [
             'status' => 'failed',
             'message' => "Account already exists. Please try again with a different credentials or kindly login" ,
@@ -25,11 +26,13 @@
         $data_insertion = $conn->query($sqlQuery);
 
         if ($data_insertion) {
+            header('HTTP/1.1 200');
             $response = [
                 'status' => 'success',
                 'message' => 'Registration successful. You can now proceed to login.',
             ];
         }else{
+            header('HTTP/1.1 500');
             $response = [
                 'status' => 'failed',
                 'message' => "An error occurred. Please try again. " . $conn->error,

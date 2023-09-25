@@ -106,6 +106,24 @@
             });
         }
         fetchPost();
+
+        $token = 'Hello2Token4user';
+
+        // let test = () => {
+        //     fetch('../server/headers.php', {
+        //         method: 'POST',
+        //         body: 
+        //         // headers : {
+        //         //     'Content-Type' : 'application/json',
+        //         //     'Authorization' : 'Bearer ' + $token,
+        //         // }
+        //     })
+        //     .then((res) => res.json())
+        //     .then((res) => {
+        //         console.log(res);
+        //     });
+        // }
+        // test();
     </script>
 </body>
 </html>

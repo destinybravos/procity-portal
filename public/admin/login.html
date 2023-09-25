@@ -72,8 +72,9 @@
             .then((data) => {
                 if (data.status == 'success') {
                     // If the request is successful, redirect to the login
-                    alert(data.message);
+                    // console.log(data);
                     sessionStorage.setItem('active_user', JSON.stringify(data.user));
+                    sessionStorage.setItem('token', data.access_token); //Store the token in session storage
                     window.location.href = 'dashboard.php';
                 } else {
                     alert(data.message);

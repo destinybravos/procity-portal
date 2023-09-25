@@ -31,8 +31,36 @@
                 include '../components/admin_header.html';
             ?>
 
-            <section>
-                Dashboard
+            <section class="px-5 py-3 my-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <aside class="min-h-[100px] border px-4 py-3 rounded-lg shadow bg-white">
+                        <p class="text-sm">
+                            <i class="fa fa-users"></i> No of Users
+                        </p>
+                        <h2 class="text-5xl font-bold">
+                            <span id="no_users"></span>
+                        </h2>
+                        <a href="#" class="text-primary italic capitalize">manage users records</a>
+                    </aside>
+                    <aside class="min-h-[100px] border px-4 py-3 rounded-lg shadow bg-white">
+                        <p class="text-sm">
+                            <i class="fa fa-users"></i> Categories
+                        </p>
+                        <h2 class="text-5xl font-bold">
+                            <span id="no_cats"></span>
+                        </h2>
+                        <a href="#" class="text-primary italic capitalize">manage users records</a>
+                    </aside>
+                    <aside class="min-h-[100px] border px-4 py-3 rounded-lg shadow bg-white">
+                        <p class="text-sm">
+                            <i class="fa fa-users"></i> No of Post
+                        </p>
+                        <h2 class="text-5xl font-bold">
+                            <span id="no_posts"></span>
+                        </h2>
+                        <a href="#" class="text-primary italic capitalize">manage users records</a>
+                    </aside>
+                </div>
             </section>
 
         </main>
@@ -41,6 +69,22 @@
     <!-- Script -->
     <script>
         document.getElementById("page_indicator").innerHTML = `<i class="fa fa-tachometer-alt"></i> Dashboard`;
+
+        let fetchDasboaardStats = () => {
+            fetch('../../server/dashboard_stats.php', {
+                method: 'POST', 
+                headers: {
+                    'Authorization' : sessionStorage.getItem('token')
+                }
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                document.getElementById('no_users').innerText = data.no_user;
+                document.getElementById('no_cats').innerText = data.no_categories;
+                document.getElementById('no_posts').innerText = data.no_posts;
+            })  
+        }
+        fetchDasboaardStats();
     </script>
 </body>
 </html>

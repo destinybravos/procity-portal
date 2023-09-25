@@ -99,6 +99,9 @@
             fetch('../../server/manage_post.php', {
                 method: 'POST', 
                 body: formData,
+                headers: {
+                    'Authorization' : sessionStorage.getItem('token')
+                }
             })
             .then((res) => res.json())
             .then((data) => {

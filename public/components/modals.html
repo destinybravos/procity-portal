@@ -79,6 +79,9 @@
         fetch('../../server/save_category.php', {
                 method: 'POST', 
                 body: formData,
+                headers: {
+                    'Authorization' : sessionStorage.getItem('token')
+                }
             })
             .then((res) => res.json())
             .then((data) => {
@@ -162,6 +165,9 @@
         fetch('../../server/manage_post.php', {
                 method: 'POST', 
                 body: formData,
+                headers: {
+                    'Authorization' : sessionStorage.getItem('token')
+                }
             })
             .then((res) => res.json())
             .then((data) => {
