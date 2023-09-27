@@ -87,7 +87,7 @@
                                             ${post.body}
                                         </p>
                                         <p class="mb-2">
-                                            <a href="#" class="hover:bg-primary border-primary border text-primary hover:text-white py-1 px-3 text-xs rounded-md italic">
+                                            <a href="blogpost.php?post_id=${post.id}" class="hover:bg-primary border-primary border text-primary hover:text-white py-1 px-3 text-xs rounded-md italic">
                                                 Read More
                                             </a>
                                         </p>

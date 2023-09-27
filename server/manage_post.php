@@ -2,20 +2,108 @@
 
     include "authorize.php";
 
-    // Check if the request is authorized
-    if ($authorized === false) {
-        // return 401 Error Response
+    $action = $_POST['action'];
+
+    // If action iss fetch_post, then query database and fetch all posts
+    if ($action == 'fetch_post'){
+
+        // Build Query to Fetch all posts if the request is unauthenticated || authorized
+        if ($authorized === false){
+            $sqlQuery = "SELECT * FROM tbl_posts ORDER BY posted_on DESC";
+        }else{
+            // If the request is authenticated || authorized, Filter the posts using user role
+            // If the authenticated user role is admin, fetch all the posts
+            if ($authorized_user['role'] == 'admin') {
+                $sqlQuery = "SELECT * FROM tbl_posts ORDER BY posted_on DESC";
+            } else {
+                $user_id = $authorized_user['id'];
+                $sqlQuery = "SELECT * FROM tbl_posts WHERE user_id='$user_id' ORDER BY posted_on DESC";
+            }
+        }
+
+        // Execute the SQL query
+        $execQuery = $conn->query($sqlQuery);
+
+
+        $posts = []; // Delare an Empty array for all post
+
+
+        // Loop through all the available post in the database using a while loop
+        while ($postRecord = $execQuery->fetch_assoc()) {
+            // Store the user_id from the post record into a variable
+            $user_id = $postRecord['user_id'];
+            // Call the getUser method to fetch the author using the user_id
+            $postRecord['author'] = getUserById($user_id, $conn);
+            // Store the category_id from the post record into a variable
+            $cat_id = $postRecord['category_id'];
+            // Call the getCategory method to fetch the category using the category_id
+            $postRecord['cat'] = getCategoryById($cat_id, $conn);
+            // Push the post into the posts array
+            array_push($posts, $postRecord);
+        }
+
+        header('HTTP/1.1 200');
         $response = [
-            'status' => 'failed',
-            'message' => 'Message or reqest not authorized', 
+            'status' => 'success',
+            'posts' => $posts // Pass the array of posts with the response
         ];
+
         // Echo the response
         echo json_encode($response);
+    }
+
+    // Fetch A Single Post
+    if ($action == 'fetch_a_post'){
+        $postId = $_POST['post_id'];
+        
+        $sqlQuery = "SELECT * FROM tbl_posts WHERE id='$postId'";
+        // Execute the SQL query
+        $execQuery = $conn->query($sqlQuery);
+
+        $post = $execQuery->fetch_assoc();
+
+        // Fetch Author Details
+        $user_id = $post['user_id'];
+        $post['author'] = getUserById($user_id, $conn);
+
+        // Fetch Category Details
+        $cat_id = $post['category_id'];
+        $post['cat'] = getCategoryById($cat_id, $conn);
+
+        header('HTTP/1.1 200');
+        $response = [
+            'status' => 'success',
+            'post' => $post // Pass the array of posts with the response
+        ];
+
+        // Echo the response
+        echo json_encode($response);
+    }
+
+    // Check if the request is authorized
+    if ($authorized === false) {
+        switch ($action) {
+            case 'fetch_post':
+                    // Leave blank and continue with fetch_post
+                break;
+            case 'fetch_a_post':
+                    // Leave blank and continue with fetch_post
+                break;
+            
+            default:
+                // return 401 Error Response
+                $response = [
+                    'status' => 'failed',
+                    'message' => 'Message or reqest not authorized', 
+                ];
+                // Echo the response
+                echo json_encode($response);
+                break;
+        }
     } else {
 
         // Else, means the user is authorized. Proceed with any other action
-
-        $action = $_POST['action'];
+        
         // If action iss save_post, then save the post data to the database
         if ($action == 'save_post'){
             $cat_id = $_POST['category_id'];
@@ -33,50 +121,19 @@
             $data_insertion = $conn->query("INSERT INTO tbl_posts(category_id, title, body, user_id, image) VALUES('$cat_id', '$title', '$body', $user_id, '$image')");
 
             if ($data_insertion) {
+                header('HTTP/1.1 200');
                 $response = [
                     'status' => 'success',
                     'message' => 'Post add successfully',
                 ];
             }else{
+                header('HTTP/1.1 500');
                 $response = [
                     'status' => 'failed',
                     'message' => "An error occurred. Please try again. " . $conn->error,
                 ];
             }
 
-            echo json_encode($response);
-        }
-
-        // If action iss fetch_post, then query database and fetch all posts
-        if ($action == 'fetch_post'){
-
-            $sqlQuery = "SELECT * FROM tbl_posts ORDER BY posted_on DESC";
-            $execQuery = $conn->query($sqlQuery);
-
-
-            $posts = []; // Delare an Empty array for all post
-
-
-            // Loop through all the available post in the database using a while loop
-            while ($postRecord = $execQuery->fetch_assoc()) {
-                // Store the user_id from the post record into a variable
-                $user_id = $postRecord['user_id'];
-                // Call the getUser method to fetch the author using the user_id
-                $postRecord['author'] = getUserById($user_id, $conn);
-                // Store the category_id from the post record into a variable
-                $cat_id = $postRecord['category_id'];
-                // Call the getCategory method to fetch the category using the category_id
-                $postRecord['cat'] = getCategoryById($cat_id, $conn);
-                // Push the post into the posts array
-                array_push($posts, $postRecord);
-            }
-
-            $response = [
-                'status' => 'success',
-                'posts' => $posts // Pass the array of posts with the response
-            ];
-
-            // Echo the response
             echo json_encode($response);
         }
     }

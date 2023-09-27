@@ -31,7 +31,7 @@
                 include '../components/admin_header.html';
             ?>
 
-            <section class="px-5 py-3 my-5">
+            <section class="px-5 py-3 my-5 admin-only">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     <aside class="min-h-[100px] border px-4 py-3 rounded-lg shadow bg-white">
                         <p class="text-sm">
@@ -86,5 +86,6 @@
         }
         fetchDasboaardStats();
     </script>
+    <script src="../js/general_script.js"></script>
 </body>
 </html>

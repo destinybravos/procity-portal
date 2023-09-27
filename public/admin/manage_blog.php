@@ -41,7 +41,7 @@
 
                     <aside>
                         <div class="flex items-center gap-2">
-                            <button onclick="toggleModal('cat_modal')" class="bg-primary text-white rounded-md py-2 px-4 text-sm font-semibold">
+                            <button onclick="toggleModal('cat_modal')" class="bg-primary text-white rounded-md py-2 px-4 text-sm font-semibold admin-only">
                                 Add Category 
                             </button>
                             <button onclick="toggleModal('post_modal')" class="bg-primary text-white rounded-md py-2 px-4 text-sm font-semibold">
@@ -140,5 +140,6 @@
         // Puttin Page Indicator title
         document.getElementById("page_indicator").innerHTML = `<i class="fa fa-comments"></i> Manage Blog`;
     </script>
+    <script src="../js/general_script.js"></script>
 </body>
 </html>
