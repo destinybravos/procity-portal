@@ -23,7 +23,6 @@
                 Blog Categories
             </h2>
             <div id="div_cats" class="flex gap-2 overflow-x-auto w-full">
-                
             </div>
 
             <!-- display all fetured posts -->

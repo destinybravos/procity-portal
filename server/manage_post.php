@@ -1,7 +1,10 @@
 <?php
 
     include "authorize.php";
+    header('Access-Control-Allow-Origin: *');
+    // header('Access-Control-Allow-Origin: http://127.0.0.1:5173');
 
+    
     $action = $_POST['action'];
 
     // If action iss fetch_post, then query database and fetch all posts
@@ -9,19 +12,39 @@
 
         // Build Query to Fetch all posts if the request is unauthenticated || authorized
         if ($authorized === false){
-            $sqlQuery = "SELECT * FROM tbl_posts ORDER BY posted_on DESC";
+            $sqlQuery = "SELECT * FROM tbl_posts";
         }else{
             // If the request is authenticated || authorized, Filter the posts using user role
             // If the authenticated user role is admin, fetch all the posts
             if ($authorized_user['role'] == 'admin') {
-                $sqlQuery = "SELECT * FROM tbl_posts ORDER BY posted_on DESC";
+                $sqlQuery = "SELECT * FROM tbl_posts";
             } else {
                 $user_id = $authorized_user['id'];
-                $sqlQuery = "SELECT * FROM tbl_posts WHERE user_id='$user_id' ORDER BY posted_on DESC";
+                $sqlQuery = "SELECT * FROM tbl_posts WHERE user_id='$user_id'";
             }
         }
 
+        if (isset($_POST['category']) && $_POST['category'] !== 'all') {
+            $categoryId = getCategoryIdByname($_POST['category'], $conn);
+            $sqlQuery = $sqlQuery . " WHERE category_id='" . $categoryId . "'";
+        }
+
+        if (isset($_POST['search_value']) && $_POST['search_value'] !== '') {
+            $searchVal = $_POST['search_value'];
+
+            // Check if it has search with category
+            if (isset($_POST['category']) && $_POST['category'] !== 'all') {
+                $sqlQuery = $sqlQuery . " AND title LIKE '%" . $searchVal . "%'";
+            }else{
+                $sqlQuery = $sqlQuery . " WHERE title LIKE '%" . $searchVal . "%'";
+            }
+        }
+
+
+
         // Execute the SQL query
+        $sqlQuery = $sqlQuery . " ORDER BY posted_on DESC";
+        // echo $sqlQuery;
         $execQuery = $conn->query($sqlQuery);
 
 
@@ -174,6 +197,12 @@
         $catQuery = $conn->query("SELECT * FROM tbl_category  WHERE id = '$id'");
         $category = $catQuery->fetch_assoc();
         return $category;
+    }
+
+    function getCategoryIdByname($categoryName, $conn) {
+        $catQuery = $conn->query("SELECT * FROM tbl_category  WHERE category = '$categoryName'");
+        $category = $catQuery->fetch_assoc();
+        return $category['id'];
     }
 
 ?>

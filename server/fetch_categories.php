@@ -1,6 +1,8 @@
 <?php
 
     include "connection.php";
+    
+    header('Access-Control-Allow-Origin: *');
 
     // Check the database if the user with this crerdentials already exists.
     $sqlCheckQuery = "SELECT * FROM tbl_category ORDER BY category ASC";
